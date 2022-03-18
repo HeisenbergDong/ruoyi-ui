@@ -243,6 +243,7 @@ export default {
         rechargeTime: null,
         type: null,
         status: null,
+        type : '0'
       },
       // 表单参数
       form: {},

@@ -211,6 +211,12 @@
       <el-table-column label="卖家姓名" align="center" prop="saleUser" />
       <el-table-column label="卖家手机号" align="center" prop="salePhone" />
 
+       <el-table-column label="商品主图" align="center" prop="image" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.image" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+
       <!-- <el-table-column label="商品编码" align="center" prop="skuId" /> -->
       <el-table-column label="商品名称" align="center" prop="name" />
 
@@ -574,6 +580,7 @@ export default {
         obtainType: null,
         // isScore: '0',
         score: null,
+        isScore: '0',
       },
       // 查询参数
       queryParamsTemp :{

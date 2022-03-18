@@ -193,7 +193,8 @@
 
 
         <el-form-item label="banner文字描述" prop="text">
-          <el-input v-model="form.text" type="textarea" placeholder="请输入内容" />
+          <!-- <el-input v-model="form.text" type="textarea" placeholder="请输入内容" /> -->
+          <editor v-model="form.text" :min-height="400" />
         </el-form-item>
 
         <!-- <el-form-item label="banner图url" prop="imageUrl">
@@ -266,6 +267,7 @@ export default {
       queryParamsGoods: {
         pageNum: 1,
         pageSize: 1000,
+        isScore : '0'
       },
       // 表单参数
       form: {

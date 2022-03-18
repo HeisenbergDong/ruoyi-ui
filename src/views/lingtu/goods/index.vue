@@ -211,10 +211,16 @@
       <el-table-column label="商品编码" align="center" prop="skuId" />
       <el-table-column label="商品名称" align="center" prop="name" />
 
+      <el-table-column label="商品主图" align="center" prop="image" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.image" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+
       <el-table-column label="商品分类" align="center" prop="goodsType" />
       <!-- <el-table-column label="商品类型" align="center" prop="status" /> -->
 
-      <el-table-column label="商品类型" align="center" prop="status">
+      <!-- <el-table-column label="商品类型" align="center" prop="status">
           <template slot-scope="scope">
               <span v-if="scope.row.status == 0">在售</span>
               <span v-if="scope.row.status == 1">预售</span>
@@ -222,12 +228,22 @@
               <span v-if="scope.row.status == 3">部分回收</span>
               <span v-if="scope.row.status == 4">全部回收</span>
           </template>
+      </el-table-column> -->
+          <el-table-column label="是否预售" align="center" prop="status">
+          <template slot-scope="scope">
+              <span v-if="scope.row.isPre == 0">否</span>
+              <span v-if="scope.row.isPre == 1">是</span>
+              <!-- <span v-if="scope.row.status == 2">未售</span>
+              <span v-if="scope.row.status == 3">部分回收</span>
+              <span v-if="scope.row.status == 4">全部回收</span> -->
+          </template>
       </el-table-column>
+
 
       <el-table-column label="预售时间" align="center" prop="preTime" width="150px">
           <template slot-scope="scope">
-              <span v-if="scope.row.status == 0"></span>
-              <span v-if="scope.row.status == 1">{{ parseTime(scope.row.preTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
+              <span v-if="scope.row.isPre == 0"></span>
+              <span v-if="scope.row.isPre == 1">{{ parseTime(scope.row.preTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
           </template>
       </el-table-column>
 
@@ -356,10 +372,10 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="12">
-            <el-form-item label="商品类型" prop="status">
+          <el-col :span="24">
+            <el-form-item label="是否预售" prop="isPre">
               <!-- <el-input v-model="form.status" /> -->
-                <el-select v-model="form.status" placeholder="请选择" @change="statusChange">
+                <el-select v-model="form.isPre" placeholder="请选择" @change="statusChange" style="width:90%">
                   <el-option
                     v-for="item in statusOptions"
                     :key="item.value"
@@ -382,17 +398,17 @@
               </el-date-picker>
             </el-form-item>
           </el-col> -->
-          <el-col :span="12">
+          <el-col  :span="24">
             <el-form-item label="预售时间" prop="preTime" v-show="statusSow">
               <el-date-picker v-model="form.preTime" type="datetime" placeholder="请选择" ></el-date-picker>
             </el-form-item>
           </el-col>
 
 
-           <el-col :span="12">
+           <el-col :span="24">
             <el-form-item label="商品分类" prop="status">
               <!-- <el-input v-model="form.status" /> -->
-                <el-select v-model="form.goodsType" placeholder="请选择">
+                <el-select v-model="form.goodsType" placeholder="请选择" style="width:90%">
                   <el-option
                     v-for="item in goodsTypeList"
                     :key="item.typeKey"
@@ -403,7 +419,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="12">
+          <el-col  :span="12">
             <el-form-item label="原价" prop="basePrice">
               <el-input v-model="form.basePrice" placeholder="请输入" />
             </el-form-item>
@@ -421,7 +437,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="12">
+          <el-col  :span="12">
             <el-form-item label="限购数量" prop="limitNum">
               <el-input v-model="form.limitNum" placeholder="请输入" />
             </el-form-item>
@@ -437,6 +453,12 @@
             <el-form-item label="上架状态" prop="isSale">
               <el-radio v-model="form.isSale" label="0">未上架</el-radio>
               <el-radio v-model="form.isSale" label="1">已上架</el-radio>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="24">
+            <el-form-item label="商品介绍">
+              <editor v-model="form.introduce" :min-height="300" />
             </el-form-item>
           </el-col>
 
@@ -534,28 +556,29 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        skuId: null,
-        name: null,
-        image: null,
-        introduce: null,
-        activityIntroduce: null,
-        resalePrice: null,
-        salePrice: null,
-        basePrice: null,
-        scorePrice: null,
-        isSale: null,
-        num: null,
-        isLimit: null,
-        qrCode: null,
-        goodsType: null,
-        status: null,
-        preTime: null,
-        endTime: null,
-        isSaled: null,
-        saleUser: null,
-        obtainType: null,
+        // skuId: null,
+        // name: null,
+        // image: null,
+        // introduce: null,
+        // activityIntroduce: null,
+        // resalePrice: null,
+        // salePrice: null,
+        // basePrice: null,
+        // scorePrice: null,
+        // isSale: null,
+        // num: null,
+        // isLimit: null,
+        // qrCode: null,
+        // goodsType: null,
+        // status: null,
+        // preTime: null,
+        // endTime: null,
+        // isSaled: null,
+        // saleUser: null,
         isScore: '0',
-        score: null,
+        // score: null,
+        // isPre:0,
+        // obtainType : '0'
       },
       // 查询参数
       queryParamsTemp :{
@@ -568,11 +591,11 @@ export default {
       rules: {},
 
       statusOptions: [{
-        value: 0,
-        label: '在售'
+        value: '0',
+        label: '否'
       }, {
-        value: 1,
-        label: '预售'
+        value: '1',
+        label: '是'
       }],
 
       goodsTypeList:[],
@@ -644,10 +667,10 @@ export default {
     
     statusChange(){
       debugger
-      if(this.form.status == 0){
+      if(this.form.isPre == 0){
         this.statusSow = false;
         // this.form.preTime = '';
-      }else if(this.form.status == 1){
+      }else if(this.form.isPre == 1){
         this.statusSow = true;
       }
     },
@@ -673,10 +696,10 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       debugger
-      if(row.status == 0){
+      if(row.isPre == 0){
         this.statusSow = false;
         // this.form.preTime = '';
-      }else if(row.status == 1){
+      }else if(row.isPre == 1){
         this.statusSow = true;
       }
 
@@ -695,9 +718,10 @@ export default {
       debugger
       this.form.isScore = 0; // 是否积分兑换 0不是
       this.form.isSaled = 0; // 是否二次销售商品 0 不是
-      if(this.form.status == 0){
+      if(this.form.isPre == 0){
         this.form.preTime = '';
       }
+      this.form.obtainType = '0';
       
       this.$refs["form"].validate((valid) => {
         if (valid) {

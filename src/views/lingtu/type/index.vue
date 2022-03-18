@@ -117,9 +117,9 @@
     <!-- 添加或修改商品类别对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="分类key" prop="typeKey">
+        <!-- <el-form-item label="分类key" prop="typeKey">
           <el-input v-model="form.typeKey" placeholder="请输入商品类别key" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="分类名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入商品名称" />
         </el-form-item>
@@ -127,7 +127,7 @@
           <el-input v-model="form.typeDesc" type="textarea" placeholder="请输入内容" />
         </el-form-item>
 
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="状态" prop="status" v-show="title=='修改'">
            <el-radio v-model="form.status" label="0">正常</el-radio>
            <el-radio v-model="form.status" label="1">失效</el-radio>
         </el-form-item>
@@ -239,7 +239,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加商品类别";
+      this.title = "添加";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -248,7 +248,7 @@ export default {
       getType(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改商品类别";
+        this.title = "修改";
       });
     },
     /** 提交按钮 */

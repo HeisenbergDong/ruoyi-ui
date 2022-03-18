@@ -211,6 +211,12 @@
       <el-table-column label="商品编码" align="center" prop="skuId" />
       <el-table-column label="商品名称" align="center" prop="name" />
 
+       <el-table-column label="商品主图" align="center" prop="image" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.image" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+
        <el-table-column label="商品类型" align="center" prop="isScore">
           <template slot-scope="scope">
               <span v-if="scope.row.isScore == 0">正常商品</span>
@@ -366,6 +372,20 @@
             </el-form-item>
           </el-col>
 
+           <el-col :span="24">
+            <el-form-item label="商品分类" prop="status">
+              <!-- <el-input v-model="form.status" /> -->
+                <el-select v-model="form.goodsType" placeholder="请选择" style="width:90%">
+                  <el-option
+                    v-for="item in goodsTypeList"
+                    :key="item.typeKey"
+                    :label="item.name"
+                    :value="item.typeKey">
+                  </el-option>
+                </el-select>
+            </el-form-item>
+          </el-col>
+
           <el-col :span="12">
             <el-form-item label="原价" prop="basePrice">
               <el-input v-model="form.basePrice" placeholder="请输入" />
@@ -406,6 +426,12 @@
             <el-form-item label="上架状态" prop="isSale">
               <el-radio v-model="form.isSale" label="0">未上架</el-radio>
               <el-radio v-model="form.isSale" label="1">已上架</el-radio>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="24">
+            <el-form-item label="商品介绍">
+              <editor v-model="form.introduce" :min-height="300" />
             </el-form-item>
           </el-col>
 
@@ -662,7 +688,9 @@ export default {
       if(this.form.status == 0){
         this.form.preTime = '';
       }
-      
+      this.form.isPre = 0;
+      this.form.obtainType = '0';
+
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != null) {

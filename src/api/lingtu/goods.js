@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询商品列表
 export function listGoods(query) {
   return request({
-    url: '/system/goods/list',
+    url: '/goods/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listGoods(query) {
 // 查询商品详细
 export function getGoods(id) {
   return request({
-    url: '/system/goods/' + id,
+    url: '/goods/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getGoods(id) {
 // 新增商品
 export function addGoods(data) {
   return request({
-    url: '/system/goods',
+    url: '/goods',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addGoods(data) {
 // 修改商品
 export function updateGoods(data) {
   return request({
-    url: '/system/goods',
+    url: '/goods',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateGoods(data) {
 // 删除商品
 export function delGoods(id) {
   return request({
-    url: '/system/goods/' + id,
+    url: '/goods/' + id,
     method: 'delete'
   })
 }

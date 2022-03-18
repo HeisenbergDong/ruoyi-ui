@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询积分充值/提现记录列表
 export function listDraw(query) {
   return request({
-    url: '/system/draw/list',
+    url: '/draw/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listDraw(query) {
 // 查询积分充值/提现记录详细
 export function getDraw(id) {
   return request({
-    url: '/system/draw/' + id,
+    url: '/draw/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getDraw(id) {
 // 新增积分充值/提现记录
 export function addDraw(data) {
   return request({
-    url: '/system/draw',
+    url: '/draw',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addDraw(data) {
 // 修改积分充值/提现记录
 export function updateDraw(data) {
   return request({
-    url: '/system/draw',
+    url: '/draw',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateDraw(data) {
 // 删除积分充值/提现记录
 export function delDraw(id) {
   return request({
-    url: '/system/draw/' + id,
+    url: '/draw/' + id,
     method: 'delete'
   })
 }
