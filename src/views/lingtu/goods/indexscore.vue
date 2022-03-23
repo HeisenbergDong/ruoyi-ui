@@ -400,7 +400,7 @@
 
            <el-col :span="12">
             <el-form-item label="积分数量" prop="score">
-              <el-input v-model="form.score" placeholder="请输入" />
+              <el-input v-model="form.scorePrice" placeholder="请输入" />
             </el-form-item>
           </el-col>
 
@@ -551,6 +551,8 @@ export default {
         obtainType: null,
         isScore: '1',
         score: null,
+        isSaled :'0',
+        status :'0',
       },
       // 查询参数
       queryParamsTemp :{

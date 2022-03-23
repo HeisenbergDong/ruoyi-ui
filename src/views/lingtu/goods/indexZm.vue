@@ -581,6 +581,8 @@ export default {
         // isScore: '0',
         score: null,
         isScore: '0',
+        isSaled :'1',
+        status :'0',
       },
       // 查询参数
       queryParamsTemp :{

@@ -576,6 +576,8 @@ export default {
         // isSaled: null,
         // saleUser: null,
         isScore: '0',
+        isSaled :'0',
+        status :'0',
         // score: null,
         // isPre:0,
         // obtainType : '0'

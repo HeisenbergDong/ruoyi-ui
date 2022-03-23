@@ -1,64 +1,56 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <!-- <el-form-item label="用户id" prop="userId">
-        <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入用户id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item> -->
-      <el-form-item label="手机号" prop="userPhone">
-        <el-input
-          v-model="queryParams.userPhone"
-          placeholder="请输入"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <!-- <el-form-item label="抽取的盲盒id" prop="boxId">
+    <!-- <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="盲盒id即goods表的id" prop="boxId">
         <el-input
           v-model="queryParams.boxId"
-          placeholder="请输入抽取的盲盒id"
+          placeholder="请输入盲盒id即goods表的id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="盲盒兑换的商品id" prop="goodsId">
+      <el-form-item label="商品id也是goods表的id" prop="goodsId">
         <el-input
           v-model="queryParams.goodsId"
-          placeholder="请输入盲盒兑换的商品id"
+          placeholder="请输入商品id也是goods表的id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="抽取时间" prop="boxTime">
-        <el-date-picker clearable
-          v-model="queryParams.boxTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择抽取时间">
-        </el-date-picker>
-      </el-form-item> -->
+      <el-form-item label="一个盲盒可开启的此商品数量" prop="goodsNum">
+        <el-input
+          v-model="queryParams.goodsNum"
+          placeholder="请输入一个盲盒可开启的此商品数量"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="抽取该商品的概率" prop="probability">
+        <el-input
+          v-model="queryParams.probability"
+          placeholder="请输入抽取该商品的概率"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
-    </el-form>
+    </el-form> -->
 
     <el-row :gutter="10" class="mb8">
-      <!-- <el-col :span="1.5">
+      <el-col :span="1.5">
         <el-button
           type="primary"
           plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:log:add']"
+          v-hasPermi="['system:rule:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button
           type="success"
           plain
@@ -66,7 +58,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:log:edit']"
+          v-hasPermi="['system:rule:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -77,7 +69,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:log:remove']"
+          v-hasPermi="['system:rule:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -87,44 +79,38 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['system:log:export']"
+          v-hasPermi="['system:rule:export']"
         >导出</el-button>
       </el-col> -->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="logList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="ruleList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column label="${comment}" align="center" prop="id" /> -->
-      <el-table-column label="用户id" align="center" prop="userId" />
-      <el-table-column label="姓名" align="center" prop="userPhone" />
-      <el-table-column label="手机号" align="center" prop="userPhone" />
-      <el-table-column label="奖品" align="center" prop="boxId" />
-      <!-- <el-table-column label="盲盒兑换的商品id" align="center" prop="goodsId" /> -->
-      <el-table-column label="抽取时间" align="center" prop="boxTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.boxTime,  "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column label="备注" align="center" prop="remark" /> -->
-      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="${comment}" align="center" prop="id" />
+      <el-table-column label="盲盒id即goods表的id" align="center" prop="boxId" />
+      <el-table-column label="商品id也是goods表的id" align="center" prop="goodsId" />
+      <el-table-column label="一个盲盒可开启的此商品数量" align="center" prop="goodsNum" />
+      <el-table-column label="抽取该商品的概率" align="center" prop="probability" />
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:log:edit']"
+            v-hasPermi="['system:rule:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:log:remove']"
+            v-hasPermi="['system:rule:remove']"
           >删除</el-button>
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     
     <pagination
@@ -135,28 +121,20 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改盲盒日志对话框 -->
+    <!-- 添加或修改盲盒规则对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户id" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入用户id" />
+        <el-form-item label="盲盒id即goods表的id" prop="boxId">
+          <el-input v-model="form.boxId" placeholder="请输入盲盒id即goods表的id" />
         </el-form-item>
-        <el-form-item label="用户手机号，冗余过来" prop="userPhone">
-          <el-input v-model="form.userPhone" placeholder="请输入用户手机号，冗余过来" />
+        <el-form-item label="商品id也是goods表的id" prop="goodsId">
+          <el-input v-model="form.goodsId" placeholder="请输入商品id也是goods表的id" />
         </el-form-item>
-        <el-form-item label="抽取的盲盒id" prop="boxId">
-          <el-input v-model="form.boxId" placeholder="请输入抽取的盲盒id" />
+        <el-form-item label="一个盲盒可开启的此商品数量" prop="goodsNum">
+          <el-input v-model="form.goodsNum" placeholder="请输入一个盲盒可开启的此商品数量" />
         </el-form-item>
-        <el-form-item label="盲盒兑换的商品id" prop="goodsId">
-          <el-input v-model="form.goodsId" placeholder="请输入盲盒兑换的商品id" />
-        </el-form-item>
-        <el-form-item label="抽取时间" prop="boxTime">
-          <el-date-picker clearable
-            v-model="form.boxTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择抽取时间">
-          </el-date-picker>
+        <el-form-item label="抽取该商品的概率" prop="probability">
+          <el-input v-model="form.probability" placeholder="请输入抽取该商品的概率" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
@@ -171,10 +149,10 @@
 </template>
 
 <script>
-import { listLog, getLog, delLog, addLog, updateLog } from "@/api/lingtu/boxLog";
+import { listRule, getRule, delRule, addRule, updateRule } from "@/api/lingtu/boxRule";
 
 export default {
-  name: "Log",
+  name: "BoxRule",
   data() {
     return {
       // 遮罩层
@@ -189,8 +167,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 盲盒日志表格数据
-      logList: [],
+      // 盲盒规则表格数据
+      ruleList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -199,30 +177,26 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: null,
-        userPhone: null,
         boxId: null,
         goodsId: null,
-        boxTime: null,
+        goodsNum: null,
+        probability: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        userId: [
-          { required: true, message: "用户id不能为空", trigger: "blur" }
-        ],
-        userPhone: [
-          { required: true, message: "用户手机号，冗余过来不能为空", trigger: "blur" }
-        ],
         boxId: [
-          { required: true, message: "抽取的盲盒id不能为空", trigger: "blur" }
+          { required: true, message: "盲盒id即goods表的id不能为空", trigger: "blur" }
         ],
         goodsId: [
-          { required: true, message: "盲盒兑换的商品id不能为空", trigger: "blur" }
+          { required: true, message: "商品id也是goods表的id不能为空", trigger: "blur" }
         ],
-        boxTime: [
-          { required: true, message: "抽取时间不能为空", trigger: "blur" }
+        goodsNum: [
+          { required: true, message: "一个盲盒可开启的此商品数量不能为空", trigger: "blur" }
+        ],
+        probability: [
+          { required: true, message: "抽取该商品的概率不能为空", trigger: "blur" }
         ],
       }
     };
@@ -231,11 +205,11 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询盲盒日志列表 */
+    /** 查询盲盒规则列表 */
     getList() {
       this.loading = true;
-      listLog(this.queryParams).then(response => {
-        this.logList = response.rows;
+      listRule(this.queryParams).then(response => {
+        this.ruleList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -249,11 +223,10 @@ export default {
     reset() {
       this.form = {
         id: null,
-        userId: null,
-        userPhone: null,
         boxId: null,
         goodsId: null,
-        boxTime: null,
+        goodsNum: null,
+        probability: null,
         createBy: null,
         createTime: null,
         updateBy: null,
@@ -282,16 +255,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加盲盒日志";
+      this.title = "添加盲盒规则";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getLog(id).then(response => {
+      getRule(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改盲盒日志";
+        this.title = "修改盲盒规则";
       });
     },
     /** 提交按钮 */
@@ -299,13 +272,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateLog(this.form).then(response => {
+            updateRule(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addLog(this.form).then(response => {
+            addRule(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -317,8 +290,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除盲盒日志编号为"' + ids + '"的数据项？').then(function() {
-        return delLog(ids);
+      this.$modal.confirm('是否确认删除盲盒规则编号为"' + ids + '"的数据项？').then(function() {
+        return delRule(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -326,9 +299,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/log/export', {
+      this.download('system/rule/export', {
         ...this.queryParams
-      }, `log_${new Date().getTime()}.xlsx`)
+      }, `rule_${new Date().getTime()}.xlsx`)
     }
   }
 };

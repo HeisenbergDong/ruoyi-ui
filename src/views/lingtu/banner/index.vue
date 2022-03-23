@@ -267,7 +267,8 @@ export default {
       queryParamsGoods: {
         pageNum: 1,
         pageSize: 1000,
-        isScore : '0'
+        isScore : '0',
+         isSaled :'0',
       },
       // 表单参数
       form: {
