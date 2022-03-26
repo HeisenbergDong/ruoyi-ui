@@ -1,47 +1,34 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="姓名" prop="userId">
+      <el-form-item label="姓名" prop="userName">
         <el-input
-          v-model="queryParams.userId"
+          v-model="queryParams.userName"
           placeholder="请输入用户id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <!-- <el-form-item label="冗余用户电话" prop="userPhone">
-        <el-input
-          v-model="queryParams.userPhone"
-          placeholder="请输入冗余用户电话"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+
+      <el-form-item label="提现状态" prop="auditStatus">
+        <el-select
+          v-model="queryParams.auditStatus"
+          placeholder="请选择"
+          style="width: 90%"
+          clearable 
+        >
+          <el-option
+            v-for="item in auditStatusList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="充值渠道0-微信1-支付宝" prop="channel">
-        <el-input
-          v-model="queryParams.channel"
-          placeholder="请输入充值渠道0-微信1-支付宝"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="充值/提现金额" prop="amount">
-        <el-input
-          v-model="queryParams.amount"
-          placeholder="请输入充值/提现金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="账户金额" prop="account">
-        <el-input
-          v-model="queryParams.account"
-          placeholder="请输入账户金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="充值/提现时间" prop="rechargeTime">
+
+
+       <!-- <el-form-item label="创建日期" prop="rechargeTime">
         <el-date-picker clearable
           v-model="queryParams.rechargeTime"
           type="date"
@@ -49,71 +36,20 @@
           placeholder="请选择充值/提现时间">
         </el-date-picker>
       </el-form-item> -->
-       <el-form-item label="创建日期" prop="rechargeTime">
-        <el-date-picker clearable
-          v-model="queryParams.rechargeTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择充值/提现时间">
-        </el-date-picker>
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
-    <!-- <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:draw:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:draw:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:draw:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:draw:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row> -->
+
 
     <el-table v-loading="loading" :data="drawList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
       <!-- <el-table-column label="用户id" align="center" prop="userId" /> -->
-      <el-table-column label="姓名" align="center" prop="userId" />
+      <el-table-column label="姓名" align="center" prop="userName" />
       <el-table-column label="手机号" align="center" prop="userPhone" />
 
       <el-table-column label="类型" align="center" prop="type" >
@@ -124,18 +60,17 @@
       </el-table-column>
       <el-table-column label="金额" align="center" prop="amount" />
 
-      <el-table-column label="提现地址" align="center" prop="channel" >
+      <el-table-column label="提现地址" align="center" prop="payType" >
         <template slot-scope="scope">
-            <span v-if="scope.row.channel == 0">微信</span>
-            <span v-if="scope.row.channel == 1">支付宝</span>
+            <span v-if="scope.row.payType == 0">微信</span>
+            <span v-if="scope.row.payType == 1">支付宝</span>
         </template>
       </el-table-column>
 
-       <el-table-column label="状态" align="center" prop="status" >
+       <el-table-column label="状态" align="center" prop="auditStatus" >
         <template slot-scope="scope">
-            <span v-if="scope.row.status == 0">成功</span>
-            <span v-if="scope.row.status == 1">待审核</span>
-            <span v-if="scope.row.status == 2">失败</span>
+            <span v-if="scope.row.auditStatus == 0">待审核</span>
+            <span v-if="scope.row.auditStatus == 1">审核通过</span>
         </template>
       </el-table-column>
       
@@ -267,7 +202,19 @@ export default {
         account: [
           { required: true, message: "账户金额不能为空", trigger: "blur" }
         ],
-      }
+      },
+
+      auditStatusList: [
+        {
+          id: 0,
+          name: "待审核",
+        },
+        {
+          id: 1,
+          name: "审核通过",
+        },
+      ],
+
     };
   },
   created() {
@@ -332,14 +279,32 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+
       this.reset();
-      const id = row.id || this.ids
-      getDraw(id).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改积分充值/提现记录";
-      });
+
+      this.$modal.confirm('是否确认审批？').then(function() {
+        
+        const id = row.id || this.ids
+        getDraw(id).then(response => {
+          this.form = response.data;
+          this.open = true;
+          this.title = "修改积分充值/提现记录";
+        });
+
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("审批成功");
+      }).catch(() => {});
+
+     
+      
     },
+    
+    /** 提现审批 **/
+    audit(row){
+      
+    },
+
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {

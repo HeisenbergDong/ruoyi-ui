@@ -74,7 +74,7 @@
       <!-- <el-table-column label="编号" align="center" prop="id" /> -->
       <el-table-column label="分类key" align="center" prop="typeKey" />
       <el-table-column label="分类名称" align="center" prop="name" />
-      <el-table-column label="分类描述" align="center" prop="typeDesc" />
+      <!-- <el-table-column label="分类描述" align="center" prop="typeDesc" /> -->
       <!-- <el-table-column label="状态0-正常1-失效" align="center" prop="status" /> -->
 
       <el-table-column label="状态" align="center" prop="status">
@@ -95,13 +95,13 @@
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:type:edit']"
           >修改</el-button>
-          <el-button
+          <!-- <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:type:remove']"
-          >删除</el-button>
+          >删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -182,6 +182,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
+         name :[{required: true, message: '请输入', trigger: 'blur'}],
       }
     };
   },

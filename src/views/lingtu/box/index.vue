@@ -1,67 +1,5 @@
 <template>
   <div class="app-container">
-    <!-- <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="小图" prop="imageSon">
-        <el-input
-          v-model="queryParams.imageSon"
-          placeholder="请输入小图"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="开启盲盒费用" prop="price">
-        <el-input
-          v-model="queryParams.price"
-          placeholder="请输入开启盲盒费用"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="活动时间" prop="activeTime">
-        <el-date-picker clearable
-          v-model="queryParams.activeTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择活动时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="活动商品id，多个用‘,’分割" prop="goodsIds">
-        <el-input
-          v-model="queryParams.goodsIds"
-          placeholder="请输入活动商品id，多个用‘,’分割"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="活动人数限制" prop="persionNum">
-        <el-input
-          v-model="queryParams.persionNum"
-          placeholder="请输入活动人数限制"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="主办单位" prop="company">
-        <el-input
-          v-model="queryParams.company"
-          placeholder="请输入主办单位"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="活动说明" prop="introduction">
-        <el-input
-          v-model="queryParams.introduction"
-          placeholder="请输入活动说明"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form> -->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -75,38 +13,6 @@
           >新增</el-button
         >
       </el-col>
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:box:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:box:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:box:export']"
-        >导出</el-button>
-      </el-col> -->
       <right-toolbar
         :showSearch.sync="showSearch"
         @queryTable="getList"
@@ -146,7 +52,7 @@
         </template>
       </el-table-column>
       <!-- <el-table-column label="活动商品id，多个用‘,’分割" align="center" prop="goodsIds" /> -->
-      <el-table-column label="活动人数限制" align="center" prop="persionNum" />
+      <el-table-column label="参与人数" align="center" prop="persionNum" />
       <el-table-column label="主办单位" align="center" prop="company" />
       <!-- <el-table-column label="活动说明" align="center" prop="introduction" /> -->
       <!-- <el-table-column label="备注" align="center" prop="remark" /> -->
@@ -185,13 +91,13 @@
       </el-table-column>
     </el-table>
 
-    <pagination
+    <!-- <pagination
       v-show="total > 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
-    />
+    /> -->
 
 
     <!-- 添加或修改盲盒对话框 -->
@@ -234,10 +140,10 @@
           <el-input v-model="form.goodsIds" placeholder="请输入活动商品id，多个用‘,’分割" />
         </el-form-item> -->
           <el-col :span="12">
-            <el-form-item label="活动人数限制" prop="persionNum">
+            <el-form-item label="参与人数" prop="persionNum">
               <el-input
                 v-model="form.persionNum"
-                placeholder="请输入活动人数限制"
+                placeholder="请输入"
               />
             </el-form-item>
           </el-col>
@@ -306,10 +212,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num1" placeholder="请输入"></el-input>
+            <el-input v-model="num1" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro1" placeholder="请输入"></el-input>
+            <el-input v-model="pro1" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -326,10 +232,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num2" placeholder="请输入"></el-input>
+            <el-input v-model="num2" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro2" placeholder="请输入"></el-input>
+            <el-input v-model="pro2" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -346,10 +252,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num3" placeholder="请输入"></el-input>
+            <el-input v-model="num3" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro3" placeholder="请输入"></el-input>
+            <el-input v-model="pro3" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -366,10 +272,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num4" placeholder="请输入"></el-input>
+            <el-input v-model="num4" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro4" placeholder="请输入"></el-input>
+            <el-input v-model="pro4" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -386,10 +292,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num5" placeholder="请输入"></el-input>
+            <el-input v-model="num5" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro5" placeholder="请输入"></el-input>
+            <el-input v-model="pro5" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -407,10 +313,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num6" placeholder="请输入"></el-input>
+            <el-input v-model="num6" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro6" placeholder="请输入"></el-input>
+            <el-input v-model="pro6" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
         
@@ -429,10 +335,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num7" placeholder="请输入"></el-input>
+            <el-input v-model="num7" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro7" placeholder="请输入"></el-input>
+            <el-input v-model="pro7" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -450,10 +356,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num8" placeholder="请输入"></el-input>
+            <el-input v-model="num8" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro8" placeholder="请输入"></el-input>
+            <el-input v-model="pro8" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -471,10 +377,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num9" placeholder="请输入"></el-input>
+            <el-input v-model="num9" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro9" placeholder="请输入"></el-input>
+            <el-input v-model="pro9" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -492,10 +398,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num10" placeholder="请输入"></el-input>
+            <el-input v-model="num10" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro10" placeholder="请输入"></el-input>
+            <el-input v-model="pro10" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -513,10 +419,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num11" placeholder="请输入"></el-input>
+            <el-input v-model="num11" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro11" placeholder="请输入"></el-input>
+            <el-input v-model="pro11" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -534,10 +440,10 @@
               </el-select>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="num12" placeholder="请输入"></el-input>
+            <el-input v-model="num12" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-input v-model="pro12" placeholder="请输入"></el-input>
+            <el-input v-model="pro12" placeholder="请输入" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
           </el-col>
         </el-row>
 
@@ -606,7 +512,7 @@ export default {
       // 查询参数
       queryParamsGoods: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 1000,
 
         isScore: '0',
         isSaled :'0',
@@ -674,16 +580,18 @@ export default {
       good12:'',
       num12:'',
       pro12:'',
-
       
-
-      
+      boxAddShow : true,
     };
   },
   created() {
     this.getList();
     listGoods(this.queryParamsGoods).then((response) => {
+      debugger
       this.goodsList = response.rows;
+      if(undefined!=this.goodsList && this.goodsList.length > 0){
+        this.boxAddShow = false;
+      }
     });
 
   },
@@ -703,7 +611,18 @@ export default {
       let ruleList = [];
       
       // 必传校验
-      if(undefined == this.good1 || '' == this.good1 || undefined == this.good1 || '' == this.good1 || undefined == this.pro1 || '' == this.pro1){
+      if(undefined == this.good1 || '' == this.good1 || undefined == this.num1 || '' == this.num1 || undefined == this.pro1 || '' == this.pro1 
+      || undefined == this.good2 || '' == this.good2 || undefined == this.num2 || '' == this.num2 || undefined == this.pro2 || '' == this.pro2
+      || undefined == this.good3 || '' == this.good3 || undefined == this.num3 || '' == this.num3 || undefined == this.pro3 || '' == this.pro3 
+      || undefined == this.good4 || '' == this.good4 || undefined == this.num4 || '' == this.num4 || undefined == this.pro4 || '' == this.pro4 
+      || undefined == this.good5 || '' == this.good5 || undefined == this.num5 || '' == this.num5 || undefined == this.pro5 || '' == this.pro5 
+      || undefined == this.good6 || '' == this.good6 || undefined == this.num6 || '' == this.num6 || undefined == this.pro6 || '' == this.pro6 
+      || undefined == this.good7 || '' == this.good7 || undefined == this.num7 || '' == this.num7 || undefined == this.pro7 || '' == this.pro7 
+      || undefined == this.good8 || '' == this.good8 || undefined == this.num8 || '' == this.num8 || undefined == this.pro8 || '' == this.pro8 
+      || undefined == this.good9 || '' == this.good9 || undefined == this.num9 || '' == this.num9 || undefined == this.pro9 || '' == this.pro9 
+      || undefined == this.good10 || '' == this.good10 || undefined == this.num10 || '' == this.num10 || undefined == this.pro10 || '' == this.pro10
+      || undefined == this.good11 || '' == this.good11 || undefined == this.num11 || '' == this.num11 || undefined == this.pro11 || '' == this.pro11 
+      || undefined == this.good12 || '' == this.good12 || undefined == this.num12 || '' == this.num12 || undefined == this.pro12 || '' == this.pro12 ){
         this.$modal.msgError("信息不完善，请全部填写！");
         return;
       }

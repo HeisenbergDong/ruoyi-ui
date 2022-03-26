@@ -6,7 +6,7 @@
       size="small"
       :inline="true"
       v-show="showSearch"
-      label-width="68px"
+      label-width="80px"
     >
       <el-form-item label="商品名称" prop="name">
         <el-input
@@ -17,126 +17,43 @@
         />
       </el-form-item>
 
-      <!-- <el-form-item label="商品唯一编码" prop="skuId">
+       <el-form-item label="商品分类" prop="goodsType">
+        <el-select
+          v-model="queryParams.goodsType"
+          placeholder="请选择"
+          style="width: 90%"
+          clearable 
+        >
+          <el-option
+            v-for="item in goodsTypeList"
+            :key="item.typeKey"
+            :label="item.name"
+            :value="item.typeKey"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+       <el-form-item label="卖家姓名" prop="name">
         <el-input
-          v-model="queryParams.skuId"
-          placeholder="请输入商品唯一编码"
+          v-model="queryParams.name"
+          placeholder="请输入"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="活动说明，盲盒和商品放到一起" prop="activityIntroduce">
+
+      <el-form-item label="卖家手机" prop="salePhone">
         <el-input
-          v-model="queryParams.activityIntroduce"
-          placeholder="请输入活动说明，盲盒和商品放到一起"
+          v-model="queryParams.salePhone"
+          placeholder="请输入"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="二次售卖价格" prop="resalePrice">
-        <el-input
-          v-model="queryParams.resalePrice"
-          placeholder="请输入二次售卖价格"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="平台实际销售价格" prop="salePrice">
-        <el-input
-          v-model="queryParams.salePrice"
-          placeholder="请输入平台实际销售价格"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="原价" prop="basePrice">
-        <el-input
-          v-model="queryParams.basePrice"
-          placeholder="请输入原价"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="积分价格" prop="scorePrice">
-        <el-input
-          v-model="queryParams.scorePrice"
-          placeholder="请输入积分价格"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否上架" prop="isSale">
-        <el-input
-          v-model="queryParams.isSale"
-          placeholder="请输入是否上架"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="库存100000000" prop="num">
-        <el-input
-          v-model="queryParams.num"
-          placeholder="请输入库存100000000"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否无限购0-否1-是" prop="isLimit">
-        <el-input
-          v-model="queryParams.isLimit"
-          placeholder="请输入是否无限购0-否1-是"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="预售时间" prop="preTime">
-        <el-date-picker clearable
-          v-model="queryParams.preTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择预售时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="结束时间，有些商品到期不卖" prop="endTime">
-        <el-date-picker clearable
-          v-model="queryParams.endTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择结束时间，有些商品到期不卖">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="是否二次销售商品" prop="isSaled">
-        <el-input
-          v-model="queryParams.isSaled"
-          placeholder="请输入是否二次销售商品"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="归属人" prop="saleUser">
-        <el-input
-          v-model="queryParams.saleUser"
-          placeholder="请输入归属人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否可积分兑换0-不可以1-可以" prop="isScore">
-        <el-input
-          v-model="queryParams.isScore"
-          placeholder="请输入是否可积分兑换0-不可以1-可以"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="需要多少积分" prop="score">
-        <el-input
-          v-model="queryParams.score"
-          placeholder="请输入需要多少积分"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item> -->
+
+
+   
       <el-form-item>
         <el-button
           type="primary"
@@ -152,49 +69,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:goods:add']"
-          >新增</el-button
-        >
-      </el-col> -->
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:goods:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:goods:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:goods:export']"
-        >导出</el-button> -->
-      <!-- </el-col> -->
+
       <right-toolbar
         :showSearch.sync="showSearch"
         @queryTable="getList"
@@ -220,7 +95,19 @@
       <!-- <el-table-column label="商品编码" align="center" prop="skuId" /> -->
       <el-table-column label="商品名称" align="center" prop="name" />
 
-      <el-table-column label="商品分类" align="center" prop="goodsType" />
+      <el-table-column label="商品分类" align="center" prop="goodsType">
+        <template slot-scope="scope">
+          <span>{{ converGoodsType(scope.row.goodsType) }}</span>
+        </template>
+      </el-table-column>
+
+      <!-- <el-table-column label="商品分类" align="center" prop="goodsType" /> -->
+      <el-table-column label="商品分类" align="center" prop="goodsType" >
+        <template slot-scope="scope">
+          <span>{{ converGoodsType(scope.row.goodsType) }}</span>
+        </template>
+      </el-table-column>
+
       <!-- <el-table-column label="商品类型" align="center" prop="status" /> -->
 
       <!-- <el-table-column label="商品类型" align="center" prop="status">
@@ -269,54 +156,15 @@
           </template>
       </el-table-column>
 
-      <el-table-column label="交易状态" align="center" prop="resaleStatus">
+      <el-table-column label="交易状态" align="center" prop="isGive">
           <template slot-scope="scope">
-              <span v-if="scope.row.resaleStatus == 0">交易中</span>
-              <span v-if="scope.row.resaleStatus == 1">交易完成</span>
-              <span v-if="scope.row.resaleStatus == 2">交易取消</span>
+              <span v-if="scope.row.isGive == 0 || undefined == scope.row.isGive">交易中</span>
+              <span v-if="scope.row.isGive == 1">交易完成</span>
           </template>
       </el-table-column>
 
 
 
-
-
-      <!-- <el-table-column label="商品介绍" align="center" prop="introduce" /> -->
-
-      <!-- <el-table-column
-
-        label="活动说明，盲盒和商品放到一起"
-        align="center"
-        prop="activityIntroduce"
-      /> -->
-      <!-- <el-table-column label="二次售卖价格" align="center" prop="resalePrice" /> -->
-
-      <!-- <el-table-column label="积分价格" align="center" prop="scorePrice" /> -->
-
-      <!-- <el-table-column
-        label="结束时间，有些商品到期不卖"
-        align="center"
-        prop="endTime"
-        width="180"
-      >
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.endTime, "{y}-{m}-{d}") }}</span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column label="是否二次销售商品" align="center" prop="isSaled" /> -->
-      <!-- <el-table-column label="归属人" align="center" prop="saleUser" /> -->
-      <!-- <el-table-column
-        label="获取方式0-平台生成1-购买2-赠予3-盲盒"
-        align="center"
-        prop="obtainType"
-      /> -->
-      <!-- <el-table-column
-        label="是否可积分兑换0-不可以1-可以"
-        align="center"
-        prop="isScore"
-      /> -->
-      <!-- <el-table-column label="需要多少积分" align="center" prop="score" /> -->
-      <!-- <el-table-column label="备注" align="center" prop="remark" /> -->
       <el-table-column
         label="操作"
         align="center"
@@ -331,14 +179,14 @@
             v-hasPermi="['system:goods:edit']"
             >修改</el-button
           >
-          <el-button
+          <!-- <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:goods:remove']"
             >删除</el-button
-          >
+          > -->
         </template>
       </el-table-column>
     </el-table>
@@ -464,54 +312,6 @@
             </el-form-item>
           </el-col>
 
-          <!-- <el-form-item label="商品介绍" prop="introduce">
-          <el-input v-model="form.introduce" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="活动说明，盲盒和商品放到一起" prop="activityIntroduce">
-          <el-input v-model="form.activityIntroduce" placeholder="请输入活动说明，盲盒和商品放到一起" />
-        </el-form-item>
-        <el-form-item label="二次售卖价格" prop="resalePrice">
-          <el-input v-model="form.resalePrice" placeholder="请输入二次售卖价格" />
-        </el-form-item>
-        
-        
-        <el-form-item label="积分价格" prop="scorePrice">
-          <el-input v-model="form.scorePrice" placeholder="请输入积分价格" />
-        </el-form-item>
-        <el-form-item label="是否上架" prop="isSale">
-          <el-input v-model="form.isSale" placeholder="请输入是否上架" />
-        </el-form-item>
-        
-        <el-form-item label="是否无限购0-否1-是" prop="isLimit">
-          <el-input v-model="form.isLimit" placeholder="请输入是否无限购0-否1-是" />
-        </el-form-item>
-        <el-form-item label="二维码" prop="qrCode">
-          <el-input v-model="form.qrCode" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-       
-        <el-form-item label="结束时间，有些商品到期不卖" prop="endTime">
-          <el-date-picker clearable
-            v-model="form.endTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择结束时间，有些商品到期不卖">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="是否二次销售商品" prop="isSaled">
-          <el-input v-model="form.isSaled" placeholder="请输入是否二次销售商品" />
-        </el-form-item>
-        <el-form-item label="归属人" prop="saleUser">
-          <el-input v-model="form.saleUser" placeholder="请输入归属人" />
-        </el-form-item>
-        <el-form-item label="是否可积分兑换0-不可以1-可以" prop="isScore">
-          <el-input v-model="form.isScore" placeholder="请输入是否可积分兑换0-不可以1-可以" />
-        </el-form-item>
-        <el-form-item label="需要多少积分" prop="score">
-          <el-input v-model="form.score" placeholder="请输入需要多少积分" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item> -->
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -629,6 +429,18 @@ export default {
       this.open = false;
       this.reset();
     },
+
+     // 翻译商品类型
+    converGoodsType(val){
+      if (this.goodsTypeList.length > 0) {
+          for (let i = 0; i < this.goodsTypeList.length; i++) {
+              if (val == this.goodsTypeList[i].typeKey) {
+                  return this.goodsTypeList[i].name;
+              }
+          }
+      }
+    },
+    
     // 表单重置
     reset() {
       this.form = {

@@ -17,30 +17,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <!-- <el-form-item label="抽取的盲盒id" prop="boxId">
+
+      <el-form-item label="用户名称" prop="nickName">
         <el-input
-          v-model="queryParams.boxId"
-          placeholder="请输入抽取的盲盒id"
+          v-model="queryParams.nickName"
+          placeholder="请输入"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="盲盒兑换的商品id" prop="goodsId">
-        <el-input
-          v-model="queryParams.goodsId"
-          placeholder="请输入盲盒兑换的商品id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="抽取时间" prop="boxTime">
-        <el-date-picker clearable
-          v-model="queryParams.boxTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择抽取时间">
-        </el-date-picker>
-      </el-form-item> -->
+   
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -48,60 +34,25 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:log:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:log:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:log:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:log:export']"
-        >导出</el-button>
-      </el-col> -->
+    
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="logList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column label="${comment}" align="center" prop="id" /> -->
-      <el-table-column label="用户id" align="center" prop="userId" />
-      <el-table-column label="姓名" align="center" prop="userPhone" />
+      <el-table-column label="用户名称" align="center" prop="nickName" />
+      <!-- <el-table-column label="姓名" align="center" prop="userPhone" /> -->
       <el-table-column label="手机号" align="center" prop="userPhone" />
-      <el-table-column label="奖品" align="center" prop="boxId" />
+      <!-- <el-table-column label="奖品" align="center" prop="boxId" /> -->
+       <el-table-column label="奖品" align="center" prop="goodsName" >
+        <template slot-scope="scope">
+          <span>{{scope.row.goods.name}}</span>
+        </template>
+      </el-table-column>
+
       <!-- <el-table-column label="盲盒兑换的商品id" align="center" prop="goodsId" /> -->
-      <el-table-column label="抽取时间" align="center" prop="boxTime" width="180">
+      <el-table-column label="抽取时间" align="center" prop="boxTime" >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.boxTime,  "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
         </template>

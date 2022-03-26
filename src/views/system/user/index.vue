@@ -411,7 +411,8 @@ export default {
         userName: undefined,
         phonenumber: undefined,
         status: undefined,
-        deptId: undefined
+        deptId: undefined,
+        userType:'00'
       },
       // 列信息
       columns: [

@@ -35,8 +35,8 @@ export default {
   },
   data() {
     return {
-      title: '菲天科技',
-      logo: logoImg
+      title: '灵图科技',
+      // logo: logoImg
     }
   }
 }

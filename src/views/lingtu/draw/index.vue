@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="姓名" prop="userId">
+      <el-form-item label="姓名" prop="userName">
         <el-input
-          v-model="queryParams.userId"
+          v-model="queryParams.userName"
           placeholder="请输入用户id"
           clearable
           @keyup.enter.native="handleQuery"
@@ -105,7 +105,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
       <!-- <el-table-column label="用户id" align="center" prop="userId" /> -->
-      <el-table-column label="姓名" align="center" prop="userId" />
+      <el-table-column label="姓名" align="center" prop="userName" />
       <el-table-column label="手机号" align="center" prop="userPhone" />
 
       <el-table-column label="类型" align="center" prop="type" >
@@ -116,18 +116,17 @@
       </el-table-column>
       <el-table-column label="金额" align="center" prop="amount" />
 
-      <el-table-column label="支付方式" align="center" prop="channel" >
+      <el-table-column label="支付方式" align="center" prop="payType" >
         <template slot-scope="scope">
-            <span v-if="scope.row.channel == 0">微信</span>
-            <span v-if="scope.row.channel == 1">支付宝</span>
+            <span v-if="scope.row.payType == 0">微信</span>
+            <span v-if="scope.row.payType == 1">支付宝</span>
         </template>
       </el-table-column>
 
-       <el-table-column label="到款状态" align="center" prop="status" >
+       <el-table-column label="充值状态" align="center" prop="status" >
         <template slot-scope="scope">
             <span v-if="scope.row.status == 0">成功</span>
-            <span v-if="scope.row.status == 1">待审核</span>
-            <span v-if="scope.row.status == 2">失败</span>
+            <span v-if="scope.row.status == 1">失败</span>
         </template>
       </el-table-column>
       

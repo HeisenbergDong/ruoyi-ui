@@ -9,6 +9,15 @@ export function listGoods(query) {
   })
 }
 
+export function listGoodsTemp(query) {
+  return request({
+    url: '/goods/listTemp',
+    method: 'get',
+    params: query
+  })
+}
+
+
 // 查询商品详细
 export function getGoods(id) {
   return request({

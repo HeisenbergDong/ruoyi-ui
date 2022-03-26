@@ -166,12 +166,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        type: [
-          { required: true, message: "0-签到1-分享2-推荐不能为空", trigger: "change" }
-        ],
-        score: [
-          { required: true, message: "获取积分额度不能为空", trigger: "blur" }
-        ],
+        score :[{required: true, message: '请输入', trigger: 'blur'}],
       }
     };
   },
@@ -263,7 +258,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除积分规则配置编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除？').then(function() {
         return delRule(ids);
       }).then(() => {
         this.getList();

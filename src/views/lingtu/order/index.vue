@@ -1,7 +1,14 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="姓名" prop="purchaseName">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      v-show="showSearch"
+      label-width="68px"
+    >
+      <el-form-item label="买家姓名" prop="purchaseName">
         <el-input
           v-model="queryParams.purchaseName"
           placeholder="请输入"
@@ -10,7 +17,7 @@
         />
       </el-form-item>
 
-      <el-form-item label="电话" prop="purchasePhone">
+      <el-form-item label="买家电话" prop="purchasePhone">
         <el-input
           v-model="queryParams.purchasePhone"
           placeholder="请输入"
@@ -19,14 +26,52 @@
         />
       </el-form-item>
 
-      <el-form-item label="购买时间" prop="purchaseTime">
-        <el-date-picker clearable
+      <el-form-item label="卖家姓名" prop="saleName">
+        <el-input
+          v-model="queryParams.saleName"
+          placeholder="请输入"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item label="卖家电话" prop="salePhone">
+        <el-input
+          v-model="queryParams.salePhone"
+          placeholder="请输入"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+
+      <el-form-item label="订单类型" prop="orderType">
+        <el-select
+          v-model="queryParams.orderType"
+          placeholder="请选择"
+          clearable
+          style="width: 90%"
+        >
+          <el-option
+            v-for="item in orderTypeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <!-- <el-form-item label="创建时间" prop="purchaseTime">
+        <el-date-picker
+          clearable
           v-model="queryParams.purchaseTime"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择购买时间">
+          placeholder="请选择购买时间"
+        >
         </el-date-picker>
-      </el-form-item>
+      </el-form-item> -->
 
       <!-- <el-form-item label="商品id" prop="goodsId">
         <el-input
@@ -109,13 +154,21 @@
         />
       </el-form-item> -->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >搜索</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
       </el-form-item>
     </el-form>
 
     <!-- <el-row :gutter="10" class="mb8"> -->
-      <!-- <el-col :span="1.5">
+    <!-- <el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -157,71 +210,100 @@
           v-hasPermi="['system:order:export']"
         >导出</el-button>
       </el-col> -->
-      <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row> -->
 
-    <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
+    <el-table
+      v-loading="loading"
+      :data="orderList"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="订单标号" align="center" prop="id" />
-<el-table-column label="买家姓名" align="center" prop="purchaseId" />
-<el-table-column label="买家手机" align="center" prop="purchaseId" />
- <el-table-column label="商品名称" align="center" prop="goodsName" />
-<el-table-column label="商品分类" align="center" prop="goodsName" />
-<el-table-column label="支付方式" align="center" prop="goodsName" />
-<el-table-column label="购买单价" align="center" prop="goodsName" />
-<el-table-column label="实收款" align="center" prop="goodsName" />
-<el-table-column label="购买数量" align="center" prop="goodsName" />
+      <el-table-column label="订单编号" align="center" prop="id" />
+      <el-table-column label="买家姓名" align="center" prop="purchaseName" />
+      <el-table-column label="买家手机" align="center" prop="purchasePhone" width="110px"/>
+      <el-table-column label="卖家姓名" align="center" prop="saleName" />
+      <el-table-column label="卖家手机" align="center" prop="salePhone" width="110px"/>
 
-<el-table-column label="购买时间" align="center" prop="purchaseTime" width="150px">
-    <template slot-scope="scope">
-        <span >{{ parseTime(scope.row.purchaseTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
-    </template>
-</el-table-column>
+      <el-table-column label="商品名称" align="center" prop="goodsName" width="150px"/>
 
-
-
-
-      <!-- <el-table-column label="商品id" align="center" prop="goodsId" />
-      <el-table-column label="买家id" align="center" prop="purchaseId" />
-      <el-table-column label="买家电话" align="center" prop="purchasePhone" />
-      <el-table-column label="卖家id" align="center" prop="saleUser" />
-      <el-table-column label="卖家电话冗余的" align="center" prop="salePhone" />
-      <el-table-column label="购买时间" align="center" prop="purchaseTime" width="180">
+      <el-table-column label="商品分类" align="center" prop="goods.goodsType">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.purchaseTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ converGoodsType(scope.row.goods.goodsType) }}</span>
         </template>
       </el-table-column>
+
+      <el-table-column label="支付方式" align="center" prop="payType">
+        <template slot-scope="scope">
+          <span v-if="scope.row.payType == 0">微信</span>
+          <span v-if="scope.row.payType == 1">支付宝</span>
+          <span v-if="scope.row.payType == 2">积分</span>
+          <span v-if="scope.row.payType == 3">账户</span>
+          <span v-if="scope.row.payType == 4">盲盒</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="订单类型" align="center" prop="orderType">
+        <template slot-scope="scope">
+          <span v-if="scope.row.orderType == 0">正常</span>
+          <span v-if="scope.row.orderType == 1">积分购买</span>
+          <span v-if="scope.row.orderType == 2">回收</span>
+          <span v-if="scope.row.orderType == 3">转增</span>
+          <span v-if="scope.row.orderType == 4">转卖</span>
+          <span v-if="scope.row.orderType == 5">盲盒打开</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="订单状态" align="center" prop="orderStatus">
+        <template slot-scope="scope">
+          <span v-if="scope.row.orderStatus == 0">成功</span>
+          <span v-if="scope.row.orderStatus == 1">取消</span>
+          <span v-if="scope.row.orderStatus == 2">退款</span>
+        </template>
+      </el-table-column>
+
+      <!-- <el-table-column label="转增状态" align="center" prop="orderStatus">
+        <template slot-scope="scope">
+          <span v-if="scope.row.userGiveLog.status == 0">未领取</span>
+          <span v-if="scope.row.userGiveLog.status == 1">已领取</span>
+          <span v-if="scope.row.userGiveLog.status == 2">已取消</span>
+        </template>
+      </el-table-column> -->
+
       <el-table-column label="购买价格" align="center" prop="goodsPrice" />
-      <el-table-column label="手续费额度" align="center" prop="fee" />
-      <el-table-column label="购买数量" align="center" prop="goodsNum" />
-      <el-table-column label="商品名称，冗余" align="center" prop="goodsName" />
-      <el-table-column label="支付方式0-微信1-支付宝2-积分" align="center" prop="payType" />
-      <el-table-column label="订单类型0-正常1-积分购买2-回收3-转赠" align="center" prop="orderType" />
-      <el-table-column label="订单状态0-成功1-失败2-退款" align="center" prop="orderStatus" />
-      <el-table-column label="支付id" align="center" prop="payCode" />
-      <el-table-column label="备注" align="center" prop="remark" /> -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="手续费" align="center" prop="fee" />
+      <el-table-column label="数量" align="center" prop="goodsNum" />
+
+      <el-table-column
+        label="创建时间"
+        align="center"
+        prop="createTime"
+        width="150px"
+      >
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:order:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:order:remove']"
-          >删除</el-button>
+          <span>{{
+            parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}")
+          }}</span>
         </template>
       </el-table-column>
+<!-- 
+      <el-table-column
+        label="领取时间"
+        align="center"
+        prop="purchaseTime"
+        width="150px"
+      >
+        <template slot-scope="scope">
+          <span>{{
+            parseTime(scope.row.purchaseTime, "{y}-{m}-{d} {h}:{i}:{s}")
+          }}</span>
+        </template>
+      </el-table-column> -->
+
     </el-table>
-    
+
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
@@ -244,14 +326,19 @@
           <el-input v-model="form.saleUser" placeholder="请输入卖家id" />
         </el-form-item>
         <el-form-item label="卖家电话冗余的" prop="salePhone">
-          <el-input v-model="form.salePhone" placeholder="请输入卖家电话冗余的" />
+          <el-input
+            v-model="form.salePhone"
+            placeholder="请输入卖家电话冗余的"
+          />
         </el-form-item>
         <el-form-item label="购买时间" prop="purchaseTime">
-          <el-date-picker clearable
+          <el-date-picker
+            clearable
             v-model="form.purchaseTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择购买时间">
+            placeholder="请选择购买时间"
+          >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="购买价格" prop="goodsPrice">
@@ -264,13 +351,21 @@
           <el-input v-model="form.goodsNum" placeholder="请输入购买数量" />
         </el-form-item>
         <el-form-item label="商品名称，冗余" prop="goodsName">
-          <el-input v-model="form.goodsName" type="textarea" placeholder="请输入内容" />
+          <el-input
+            v-model="form.goodsName"
+            type="textarea"
+            placeholder="请输入内容"
+          />
         </el-form-item>
         <el-form-item label="支付id" prop="payCode">
           <el-input v-model="form.payCode" placeholder="请输入支付id" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input
+            v-model="form.remark"
+            type="textarea"
+            placeholder="请输入内容"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -282,7 +377,15 @@
 </template>
 
 <script>
-import { listOrder, getOrder, delOrder, addOrder, updateOrder } from "@/api/lingtu/order";
+import {
+  listOrder,
+  getOrder,
+  delOrder,
+  addOrder,
+  updateOrder,
+} from "@/api/lingtu/order";
+
+import { listType } from "@/api/lingtu/type";
 
 export default {
   name: "Order",
@@ -329,60 +432,52 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        goodsId: [
-          { required: true, message: "商品id不能为空", trigger: "blur" }
-        ],
-        purchaseId: [
-          { required: true, message: "买家id不能为空", trigger: "blur" }
-        ],
-        purchasePhone: [
-          { required: true, message: "买家电话不能为空", trigger: "blur" }
-        ],
-        saleUser: [
-          { required: true, message: "卖家id不能为空", trigger: "blur" }
-        ],
-        salePhone: [
-          { required: true, message: "卖家电话冗余的不能为空", trigger: "blur" }
-        ],
-        purchaseTime: [
-          { required: true, message: "购买时间不能为空", trigger: "blur" }
-        ],
-        goodsPrice: [
-          { required: true, message: "购买价格不能为空", trigger: "blur" }
-        ],
-        fee: [
-          { required: true, message: "手续费额度不能为空", trigger: "blur" }
-        ],
-        goodsNum: [
-          { required: true, message: "购买数量不能为空", trigger: "blur" }
-        ],
-        goodsName: [
-          { required: true, message: "商品名称，冗余不能为空", trigger: "blur" }
-        ],
-        payType: [
-          { required: true, message: "支付方式0-微信1-支付宝2-积分不能为空", trigger: "change" }
-        ],
-        orderType: [
-          { required: true, message: "订单类型0-正常1-积分购买2-回收3-转赠不能为空", trigger: "change" }
-        ],
-        orderStatus: [
-          { required: true, message: "订单状态0-成功1-失败2-退款不能为空", trigger: "blur" }
-        ],
-        payCode: [
-          { required: true, message: "支付id不能为空", trigger: "blur" }
-        ],
-      }
+        
+        
+      },
+      goodsTypeList: [],
+      orderTypeOptions: [
+        {
+          value: "0",
+          label: "正常",
+        },
+        {
+          value: "1",
+          label: "积分购买",
+        },
+        {
+          value: "2",
+          label: "回收",
+        },
+        {
+          value: "3",
+          label: "转增",
+        },
+        {
+          value: "4",
+          label: "转卖",
+        },
+        {
+          value: "5",
+          label: "盲盒",
+        },
+      ],
+
     };
   },
   created() {
     this.getList();
+    // 商品类型
+    listType(this.queryParamsTemp).then((response) => {
+      this.goodsTypeList = response.rows;
+    });
   },
   methods: {
     /** 查询订单列表 */
     getList() {
       this.loading = true;
-      this.queryParams.orderType = 0;
-      listOrder(this.queryParams).then(response => {
+      // this.queryParams.orderType = 0;
+      listOrder(this.queryParams).then((response) => {
         this.orderList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -393,6 +488,19 @@ export default {
       this.open = false;
       this.reset();
     },
+
+    // 翻译商品类型
+    converGoodsType(val) {
+      debugger;
+      if (this.goodsTypeList.length > 0) {
+        for (let i = 0; i < this.goodsTypeList.length; i++) {
+          if (val == this.goodsTypeList[i].typeKey) {
+            return this.goodsTypeList[i].name;
+          }
+        }
+      }
+    },
+
     // 表单重置
     reset() {
       this.form = {
@@ -415,7 +523,7 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
-        remark: null
+        remark: null,
       };
       this.resetForm("form");
     },
@@ -431,9 +539,9 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -444,8 +552,8 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const id = row.id || this.ids
-      getOrder(id).then(response => {
+      const id = row.id || this.ids;
+      getOrder(id).then((response) => {
         this.form = response.data;
         this.open = true;
         this.title = "修改订单";
@@ -453,16 +561,16 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != null) {
-            updateOrder(this.form).then(response => {
+            updateOrder(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addOrder(this.form).then(response => {
+            addOrder(this.form).then((response) => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -474,19 +582,27 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除订单编号为"' + ids + '"的数据项？').then(function() {
-        return delOrder(ids);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      this.$modal
+        .confirm('是否确认删除订单编号为"' + ids + '"的数据项？')
+        .then(function () {
+          return delOrder(ids);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/order/export', {
-        ...this.queryParams
-      }, `order_${new Date().getTime()}.xlsx`)
-    }
-  }
+      this.download(
+        "system/order/export",
+        {
+          ...this.queryParams,
+        },
+        `order_${new Date().getTime()}.xlsx`
+      );
+    },
+  },
 };
 </script>

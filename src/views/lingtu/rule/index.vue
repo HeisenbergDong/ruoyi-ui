@@ -125,8 +125,9 @@
 
       
 
-        <el-form-item label="手续费比例" prop="fee">
-          <el-input v-model="form.fee" placeholder="请输入手续费比例" />
+        <el-form-item label="手续费比例 %" prop="fee">
+          <!-- <el-input v-model="form.fee"  /> -->
+          <el-input v-model="form.fee" placeholder="请输入" maxlength="5" oninput ="value=value.replace(/[^0-9.]/g,'')"/>
         </el-form-item>
         <!-- <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
@@ -176,12 +177,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        type: [
-          { required: true, message: "0-提现1-转赠2-转卖不能为空", trigger: "change" }
-        ],
-        fee: [
-          { required: true, message: "手续费比例不能为空", trigger: "blur" }
-        ],
+        fee :[{required: true, message: '请输入', trigger: 'blur'}],
       }
     };
   },
@@ -274,7 +270,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除费用规则配置编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除？').then(function() {
         return delRule(ids);
       }).then(() => {
         this.getList();

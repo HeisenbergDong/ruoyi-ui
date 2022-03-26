@@ -1,22 +1,25 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="电话号" prop="phone">
+     
+      <el-form-item label="姓名" prop="nickName">
         <el-input
-          v-model="queryParams.phone"
-          placeholder="请输入电话号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="姓名" prop="name">
-        <el-input
-          v-model="queryParams.name"
+          v-model="queryParams.nickName"
           placeholder="请输入姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+
+       <el-form-item label="电话号" prop="phonenumber">
+        <el-input
+          v-model="queryParams.phonenumber"
+          placeholder="请输入电话号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
       <!-- <el-form-item label="身份证号" prop="idCard">
         <el-input
           v-model="queryParams.idCard"
@@ -95,16 +98,25 @@
 
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="姓名" align="center" prop="name" />
-      <el-table-column label="电话号" align="center" prop="phone" />
-      <el-table-column label="身份证号" align="center" prop="idCard" />
-
-<el-table-column label="账号余额1111" align="center" prop="idCard" />
-<el-table-column label="积分1111" align="center" prop="idCard" />
-<el-table-column label="注册时间" align="center" prop="registerTime" width="180">
+      <!-- <el-table-column label="编号" align="center" prop="id" /> -->
+      <el-table-column label="头像" align="center" prop="image" width="100">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.registerTime, '{y}-{m}-{d}') }}</span>
+          <!-- <image-preview :src="scope.row.avatar" :width="50" :height="50"/> -->
+  <img :src="'data:image/png;base64,'+scope.row.avatar" :width="50" :height="50">
+        </template>
+      </el-table-column>
+
+      <el-table-column label="姓名" align="center" prop="nickName" />
+      <el-table-column label="手机号" align="center" prop="phonenumber" />
+      <el-table-column label="身份证号" align="center" prop="userCard" />
+
+<el-table-column label="账号余额" align="center" prop="accBalance" />
+<el-table-column label="积分" align="center" prop="scoreBalance" />
+<el-table-column label="推荐人手机号" align="center" prop="recommend" />
+
+<el-table-column label="注册时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 
@@ -134,10 +146,26 @@
           <el-button
             size="mini"
             type="text"
-          
-            @click="handleUpdate(scope.row)"
+           v-if="scope.row.status == 0"
+            @click="dongjie_jiedong(scope.row,'1')"
             v-hasPermi="['system:user:edit']"
-          >详情</el-button>
+          >冻结</el-button>
+
+          <el-button
+            size="mini"
+            type="text"
+           v-if="scope.row.status == 1"
+            @click="dongjie_jiedong(scope.row,'0')"
+            v-hasPermi="['system:user:edit']"
+          >解冻</el-button>
+
+          <el-button
+            size="mini"
+            type="text"
+            @click="mygoods(scope.row)"
+            v-hasPermi="['system:user:edit']"
+          >藏品</el-button>
+
           <!-- <el-button
             size="mini"
             type="text"
@@ -192,11 +220,96 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 添加或修改用户配置对话框 -->
+    <el-dialog title="藏品" :visible.sync="myGoods" width="1200px" append-to-body>
+    
+
+      <el-table
+      v-loading="loading"
+      :data="goodsList"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="55" align="center" />
+      <!-- <el-table-column label="${comment}" align="center" prop="id" /> -->
+      <!-- <el-table-column label="商品编码" align="center" prop="skuId" /> -->
+      <el-table-column label="商品名称" align="center" prop="name" />
+
+      <el-table-column label="商品主图" align="center" prop="image" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.image" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="商品分类" align="center" prop="goodsType" >
+        <template slot-scope="scope">
+          <span>{{ converGoodsType(scope.row.goodsType) }}</span>
+        </template>
+      </el-table-column>
+
+      
+
+
+          <el-table-column label="是否预售" align="center" prop="status">
+          <template slot-scope="scope">
+              <span v-if="scope.row.isPre == 0">否</span>
+              <span v-if="scope.row.isPre == 1">是</span>
+              <!-- <span v-if="scope.row.status == 2">未售</span>
+              <span v-if="scope.row.status == 3">部分回收</span>
+              <span v-if="scope.row.status == 4">全部回收</span> -->
+          </template>
+      </el-table-column>
+
+
+      <!-- <el-table-column label="预售时间" align="center" prop="preTime" width="150px">
+          <template slot-scope="scope">
+              <span v-if="scope.row.isPre == 0"></span>
+              <span v-if="scope.row.isPre == 1">{{ parseTime(scope.row.preTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
+          </template>
+      </el-table-column> -->
+      <el-table-column label="原价" align="center" prop="salePrice" />
+      <el-table-column label="数量" align="center" prop="num" />
+      <!-- <el-table-column label="折扣价格" align="center" prop="salePrice" />
+      <el-table-column label="限购数量" align="center" prop="limitNum" />
+      <el-table-column label="库存" align="center" prop="num" />
+       <el-table-column label="上架状态" align="center" prop="isSale">
+          <template slot-scope="scope">
+              <span v-if="scope.row.isSale == 0">未上架</span>
+              <span v-if="scope.row.isSale == 1">已上架</span>
+          </template>
+      </el-table-column> -->
+
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            @click="huishouClick(scope.row)"
+          >回收</el-button>
+        </template>
+      </el-table-column>
+      
+
+
+
+
+
+    </el-table>
+
+
+    <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import { listUser, getUser, delUser, addUser, updateUser } from "@/api/lingtu/user";
+// import { listUser, getUser, delUser, addUser, updateUser } from "@/api/lingtu/user";
+import { appUserslist, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus } from "@/api/system/user";
+import { listGoodsTemp } from "@/api/lingtu/goods";
+import { listType } from "@/api/lingtu/type";
 
 export default {
   name: "User",
@@ -224,13 +337,15 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        phone: null,
-        headerImage: null,
-        name: null,
-        idCard: null,
-        refereePhone: null,
-        status: null,
-        registerTime: null,
+        userName: undefined,
+        phonenumber: undefined,
+        status: undefined,
+        deptId: undefined,
+        userType:'11'
+      },
+      queryParamsType: {
+        pageNum: 1,
+        pageSize: 10,
       },
       // 表单参数
       form: {},
@@ -241,25 +356,47 @@ export default {
         ],
       },
       editStatus:true,
+      myGoods : false,
+      goodsList: [],
+      // 商品类别表格数据
+      typeList: [],
     };
   },
   created() {
     this.getList();
+    listType(this.queryParamsType).then(response => {
+      this.typeList = response.rows;
+    });
   },
   methods: {
+    
     /** 查询APP登录用户列表 */
     getList() {
       
       this.loading = true;
-      listUser(this.queryParams).then(response => {
+      appUserslist(this.queryParams).then(response => {
         this.userList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
     },
+
+    // 翻译商品类型
+    converGoodsType(val){
+      debugger
+      if (this.typeList.length > 0) {
+          for (let i = 0; i < this.typeList.length; i++) {
+              if (val == this.typeList[i].typeKey) {
+                  return this.typeList[i].name;
+              }
+          }
+      }
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;
+      this.myGoods = false;
       this.reset();
     },
     // 表单重置
@@ -304,6 +441,54 @@ export default {
       this.open = true;
       this.title = "添加APP登录用户";
     },
+    // 冻结-解冻
+    dongjie_jiedong(row,val){
+      debugger
+      let valParam = {}
+      valParam.userId = row.userId;
+      valParam.status = val;
+
+      updateUser(valParam).then(response => {
+        this.$modal.msgSuccess("操作成功");
+        this.open = false;
+        this.getList();
+      });
+    },
+
+    // 回收商品
+    huishouClick(row){
+      debugger
+      let valParam = {}
+      valParam.userId = row.userId;
+      valParam.status = val;
+
+      updateUser(valParam).then(response => {
+        this.$modal.msgSuccess("操作成功");
+        this.open = false;
+        this.getList();
+      });
+    },
+
+    // 我的藏品
+    mygoods(row){
+
+      this.myGoods = true;
+
+      let goodsParam = {
+        pageNum: 1,
+        pageSize: 999,
+        saleUid : row.userId
+      };
+
+      listGoodsTemp(goodsParam).then((response) => {
+        this.goodsList = response.rows;
+        // this.total = response.total;
+        // this.loading = false;
+      });
+
+    },
+
+
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.editStatus = false;

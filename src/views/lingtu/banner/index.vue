@@ -269,6 +269,7 @@ export default {
         pageSize: 1000,
         isScore : '0',
          isSaled :'0',
+         status : 0
       },
       // 表单参数
       form: {
@@ -402,6 +403,15 @@ debugger
       this.form.bannerPosition = this.bannerPosition;
       this.form.bannerType = this.bannerType;
       this.form.isShow = this.isShow;
+      // 校验
+      if(undefined == this.form.imageUrl || '' == this.form.imageUrl  ){
+        this.$modal.msgError("请上传图片");
+        return;
+      }
+      if(this.bannerType == '1' && (undefined == this.form.goodsId || '' == this.form.goodsId)){
+        this.$modal.msgError("请选择商品");
+        return;
+      }
 
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -424,7 +434,8 @@ debugger
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除首页banner编号为"' + ids + '"的数据项？').then(function() {
+      // this.$modal.confirm('是否确认删除首页banner编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除？').then(function() {
         return delBanner(ids);
       }).then(() => {
         this.getList();
