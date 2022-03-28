@@ -77,7 +77,7 @@
       <!-- <el-table-column label="账户金额" align="center" prop="account" /> -->
       <el-table-column label="创建时间" align="center" prop="rechargeTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.rechargeTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column label="类型0-充值1-提现" align="center" prop="type" /> -->
@@ -88,7 +88,8 @@
           <el-button
             size="mini"
             type="text"
-            @click="handleUpdate(scope.row)"
+            @click="audit(scope.row)"
+            v-show="scope.row.auditStatus == 0"
             v-hasPermi="['system:draw:edit']"
           >审批</el-button>
           <!-- <el-button
@@ -148,7 +149,7 @@
 </template>
 
 <script>
-import { listDraw, getDraw, delDraw, addDraw, updateDraw } from "@/api/lingtu/draw";
+import { listDraw, getDraw, delDraw, addDraw, updateDraw,audit } from "@/api/lingtu/draw";
 
 export default {
   name: "Drawtx",
@@ -302,7 +303,17 @@ export default {
     
     /** 提现审批 **/
     audit(row){
-      
+      debugger
+      let _this = this;
+      row.auditStatus = '1';
+      audit(row).then(response => {
+        if(response.data == 0){
+          this.$modal.msgError("提现失败，请查看三方支付余额！");
+        }else{
+          this.$modal.msgSuccess("审批成功");
+        }
+        _this.getList();
+      });
     },
 
     /** 提交按钮 */

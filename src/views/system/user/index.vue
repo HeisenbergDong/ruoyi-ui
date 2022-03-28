@@ -37,7 +37,7 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="手机号码" prop="phonenumber">
+          <!-- <el-form-item label="手机号码" prop="phonenumber">
             <el-input
               v-model="queryParams.phonenumber"
               placeholder="请输入手机号码"
@@ -45,7 +45,7 @@
               style="width: 240px"
               @keyup.enter.native="handleQuery"
             />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="状态" prop="status">
             <el-select
               v-model="queryParams.status"
@@ -140,7 +140,7 @@
           <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
           <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
           <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" />
+          <!-- <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" /> -->
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template slot-scope="scope">
               <el-switch
@@ -217,7 +217,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="12">
             <el-form-item label="手机号码" prop="phonenumber">
               <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11" />
@@ -228,7 +228,7 @@
               <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row>
           <el-col :span="12">
             <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
@@ -607,6 +607,18 @@ export default {
     },
     /** 提交按钮 */
     submitForm: function() {
+      debugger
+      let nickName = this.form.nickName;
+      let userName = this.form.userName;
+
+      var mobile_mode=/^1[34578]\d{9}$/;
+      if(mobile_mode.test(nickName) || mobile_mode.test(userName)){
+          this.$modal.msgError("账号不允许使用手机号！");
+          return;
+       }
+      
+
+
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.userId != undefined) {

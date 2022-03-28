@@ -98,7 +98,7 @@
       </el-table-column>
       <el-table-column label="原价" align="center" prop="basePrice" />
       <el-table-column label="折扣价格" align="center" prop="salePrice" />
-      <el-table-column label="积分数量" align="center" prop="score" />
+      <el-table-column label="积分数量" align="center" prop="scorePrice" />
 
       <el-table-column label="库存" align="center" prop="num" />
       <el-table-column label="上架状态" align="center" prop="isSale">

@@ -192,9 +192,9 @@
 
 
 
-        <el-form-item label="banner文字描述" prop="text">
+        <el-form-item label="banner文字描述" prop="text" v-show="showText">
           <!-- <el-input v-model="form.text" type="textarea" placeholder="请输入内容" /> -->
-          <editor v-model="form.text" :min-height="400" />
+          <editor v-model="form.text"  :min-height="400" />
         </el-form-item>
 
         <!-- <el-form-item label="banner图url" prop="imageUrl">
@@ -294,7 +294,8 @@ export default {
       bannerPosition : 0,
       bannerType : 0,
       goodsList:[],
-      goodsShow : false
+      goodsShow : false,
+      showText : true,
 
     };
   },
@@ -344,8 +345,10 @@ debugger
       debugger
       if(this.bannerType == 0){
         this.goodsShow = false;
+        this.showText = true;
       }else if(this.bannerType == 1){
         this.goodsShow = true;
+        this.showText = false;
       }
 
     },

@@ -333,6 +333,14 @@
           </el-col>
 
           <el-col :span="24">
+            <el-form-item label="商品哈希" prop="isSale">
+              <span>{{form.skuId}}</span>
+            </el-form-item>
+          </el-col>
+
+          
+
+          <el-col :span="24">
             <el-form-item label="商品介绍">
               <editor v-model="form.introduce" :min-height="300" />
             </el-form-item>
@@ -385,7 +393,7 @@ export default {
         pageSize: 10,
         isScore: "0",
         isSaled: "0",
-        isSale: 1,
+        
         status: 0,
         obtainType : '0'
       },

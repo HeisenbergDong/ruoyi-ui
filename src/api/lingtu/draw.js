@@ -26,6 +26,19 @@ export function addDraw(data) {
   })
 }
 
+
+
+
+// 审批
+export function audit(data) {
+  return request({
+    url: '/draw/audit',
+    method: 'post',
+    data: data
+  })
+}
+
+
 // 修改积分充值/提现记录
 export function updateDraw(data) {
   return request({

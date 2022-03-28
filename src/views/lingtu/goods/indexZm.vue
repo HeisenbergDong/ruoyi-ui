@@ -150,9 +150,9 @@
           </template>
       </el-table-column> -->
 
-      <el-table-column label="上架时间" align="center" prop="createTime" width="150px">
+      <el-table-column label="上架时间" align="center" prop="updateTime" width="150px">
           <template slot-scope="scope">
-              <span >{{ parseTime(scope.row.createTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
+              <span >{{ parseTime(scope.row.updateTime, "{y}-{m}-{d} {h}:{i}:{s}") }}</span>
           </template>
       </el-table-column>
 
@@ -532,8 +532,8 @@ export default {
     /** 提交按钮 */
     submitForm() {  
       debugger
-      this.form.isScore = 0; // 是否积分兑换 0不是
-      this.form.isSaled = 0; // 是否二次销售商品 0 不是
+      // this.form.isScore = 0; // 是否积分兑换 0不是
+      // this.form.isSaled = 0; // 是否二次销售商品 0 不是
       if(this.form.status == 0){
         this.form.preTime = '';
       }

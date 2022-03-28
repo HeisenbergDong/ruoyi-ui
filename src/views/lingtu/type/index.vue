@@ -72,9 +72,9 @@
     <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column label="编号" align="center" prop="id" /> -->
-      <el-table-column label="分类key" align="center" prop="typeKey" />
+      <!-- <el-table-column label="分类key" align="center" prop="typeKey" /> -->
       <el-table-column label="分类名称" align="center" prop="name" />
-      <!-- <el-table-column label="分类描述" align="center" prop="typeDesc" /> -->
+      <el-table-column label="分类描述" align="center" prop="typeDesc" />
       <!-- <el-table-column label="状态0-正常1-失效" align="center" prop="status" /> -->
 
       <el-table-column label="状态" align="center" prop="status">
