@@ -535,6 +535,8 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+
+      
       if (row.isPre == 0) {
         this.statusSow = false;
         // this.form.preTime = '';
@@ -544,11 +546,27 @@ export default {
 
       this.reset();
       const id = row.id || this.ids;
+
+
+      let _this = this;
       getGoods(id).then((response) => {
-        this.form = response.data;
-        this.form.isSale = String(this.form.isSale);
-        this.open = true;
-        this.title = "修改商品";
+
+        _this.form = response.data;
+
+        debugger
+        // 图片处理
+        if(undefined != _this.form.introduce && "" != _this.form.introduce){
+          let reg=new RegExp('http://ltly.ltd','g')//g代表全部
+          let imageDetail = _this.form.introduce.replace(reg,process.env.VUE_APP_BASE_API);
+          debugger
+          _this.form.introduce = imageDetail
+        }
+
+
+
+        _this.form.isSale = String(_this.form.isSale);
+        _this.open = true;
+        _this.title = "修改商品";
       });
     },
     /** 提交按钮 */
@@ -571,6 +589,14 @@ export default {
       }
       this.form.obtainType = "0";
 
+      // 图片处理
+      if(undefined != this.form.introduce && "" != this.form.introduce){
+        let reg=new RegExp(process.env.VUE_APP_BASE_API,'g')//g代表全部
+        let imageDetail=this.form.introduce.replace(reg,'http://ltly.ltd');
+        debugger
+        this.form.introduce = imageDetail
+      }
+          
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.id != null) {

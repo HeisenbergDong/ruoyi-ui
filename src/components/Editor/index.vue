@@ -50,7 +50,7 @@ export default {
     // 上传文件大小限制(MB)
     fileSize: {
       type: Number,
-      default: 5,
+      default: 100,
     },
     /* 类型（base64格式、url格式） */
     type: {

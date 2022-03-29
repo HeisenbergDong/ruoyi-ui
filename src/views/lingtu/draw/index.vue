@@ -123,10 +123,11 @@
         </template>
       </el-table-column>
 
-       <el-table-column label="充值状态" align="center" prop="status" >
+       <el-table-column label="充值状态" align="center" prop="payStatus" >
         <template slot-scope="scope">
-            <span v-if="scope.row.status == 0">成功</span>
-            <span v-if="scope.row.status == 1">失败</span>
+            <span v-if="scope.row.payStatus == 0">未支付</span>
+            <span v-if="scope.row.payStatus == 1">成功</span>
+            <span v-if="scope.row.payStatus == 2">失败</span>
         </template>
       </el-table-column>
       

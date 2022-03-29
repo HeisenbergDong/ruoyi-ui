@@ -382,6 +382,7 @@ debugger
     /** 修改按钮操作 */
     handleUpdate(row) {
       debugger
+
       this.isShow = row.isShow;
       this.bannerPosition = row.bannerPosition;
       this.bannerType = row.bannerType;
@@ -395,10 +396,21 @@ debugger
 
       this.reset();
       const id = row.id || this.ids
+      let _this = this;
+
       getBanner(id).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改首页banner";
+        _this.form = response.data;
+
+        // 图片处理
+        if(undefined != _this.form.text && "" != _this.form.text){
+          let reg=new RegExp('http://ltly.ltd','g')//g代表全部
+          let imageDetail = _this.form.text.replace(reg,process.env.VUE_APP_BASE_API);
+          debugger
+          _this.form.text = imageDetail
+        }
+
+        _this.open = true;
+        _this.title = "修改首页banner";
       });
     },
     /** 提交按钮 */
@@ -414,6 +426,14 @@ debugger
       if(this.bannerType == '1' && (undefined == this.form.goodsId || '' == this.form.goodsId)){
         this.$modal.msgError("请选择商品");
         return;
+      }
+
+      // 图片处理
+      if(undefined != this.form.text && "" != this.form.text){
+        let reg=new RegExp(process.env.VUE_APP_BASE_API,'g')//g代表全部
+        let imageDetail=this.form.text.replace(reg,'http://ltly.ltd');
+        debugger
+        this.form.text = imageDetail
       }
 
       this.$refs["form"].validate(valid => {
