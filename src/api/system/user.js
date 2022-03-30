@@ -55,6 +55,49 @@ export function delUser(userId) {
   })
 }
 
+
+
+
+
+
+
+// 批量冻结用户
+export function dongjieUser(data) {
+  return request({
+    url: '/system/user/dongjieUser',
+    method: 'post',
+    data: data
+  })
+}
+
+
+// 批量解冻用户
+export function jiedongUser(data) {
+  return request({
+    url: '/system/user/jiedongUser',
+    method: 'post',
+    data: data
+  })
+}
+
+
+// 回收
+export function huishou(data) {
+  return request({
+    url: '/order/recovery',
+    method: 'post',
+    data: data
+  })
+}
+
+
+
+
+
+
+
+
+
 // 用户密码重置
 export function resetUserPwd(userId, password) {
   const data = {

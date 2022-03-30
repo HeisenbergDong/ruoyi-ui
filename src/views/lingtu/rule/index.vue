@@ -26,7 +26,7 @@
           v-hasPermi="['system:rule:add']"
         >新增</el-button>
       </el-col>
-      <!-- <el-col :span="1.5">
+      <el-col :span="1.5">
         <el-button
           type="success"
           plain
@@ -56,8 +56,8 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:rule:export']"
-        >导出</el-button> -->
-      <!-- </el-col> -->
+        >导出</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
