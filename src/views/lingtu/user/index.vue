@@ -557,10 +557,11 @@ export default {
       debugger
       this.huishouParam.goodsNum = row.num;
       this.huishouParam.goodsPrice = row.salePrice;
-      this.huishouParam.saleUser = row.saleUser;
+      this.huishouParam.saleUser = row.saleUid;
       this.huishouParam.saleUid = row.saleUid;
       this.huishouParam.salePhone = row.salePhone;
       this.huishouParam.goodsId = row.id;
+
       this.huishouDia = true;
     },
 
