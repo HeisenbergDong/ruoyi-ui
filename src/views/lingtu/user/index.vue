@@ -330,9 +330,9 @@
           class-name="small-padding fixed-width"
         >
           <template slot-scope="scope">
-            <!-- <el-button size="mini" type="text" @click="huishouClick(scope.row)"
+            <el-button size="mini" type="text" @click="huishouClick(scope.row)"
               >回收</el-button
-            > -->
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -351,7 +351,7 @@
       append-to-body
     >
 
-      <el-form ref="form" :model="form" :rules="rulesAdd" label-width="120px">
+      <el-form ref="form" :model="form" :rules="rulesAdd" label-width="240px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="回收数量">
@@ -360,7 +360,7 @@
           </el-col>
 
           <el-col :span="24">
-            <el-form-item label="补偿金额">
+            <el-form-item label="补偿金额（默认平台发售价）">
               <el-input v-model="huishouParam.goodsPrice" placeholder="请输入" maxlength="5" oninput ="value=value.replace(/[^\d]/g,'')"/>
             </el-form-item>
           </el-col>
@@ -368,7 +368,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <!-- <el-button type="primary" @click="huishou">确认回收</el-button> -->
+        <el-button type="primary" @click="huishou">确认回收</el-button>
         <el-button @click="cancelHs">取 消</el-button>
       </div>
 
@@ -444,8 +444,11 @@ export default {
       typeList: [],
       huishouDia : false,
       huishouParam : {
-
+        goodsPrice:0,
+        goodsNum:0,
+        goodsId:'',
       },
+      userId:'',
     };
   },
   created() {
@@ -552,6 +555,12 @@ export default {
     // 回收商品-弹窗
     huishouClick(row) {
       debugger
+      this.huishouParam.goodsNum = row.num;
+      this.huishouParam.goodsPrice = row.salePrice;
+      this.huishouParam.saleUser = row.saleUser;
+      this.huishouParam.saleUid = row.saleUid;
+      this.huishouParam.salePhone = row.salePhone;
+      this.huishouParam.goodsId = row.id;
       this.huishouDia = true;
     },
 
@@ -561,19 +570,39 @@ export default {
       // 校验必填
       if(undefined == this.huishouParam.goodsNum || '' == this.huishouParam.goodsNum){
         this.$modal.msgError("数量不允许为空！");
+        return;
       }
       if(undefined == this.huishouParam.goodsPrice || '' == this.huishouParam.goodsPrice){
         this.$modal.msgError("金额不允许为空！");
+        return;
       }
-      
+      let _this = this;
 
-      
-      
-      huishou(valParam).then((response) => {
-        this.$modal.msgSuccess("操作成功");
-        this.open = false;
-        this.getList();
-      });
+      this.$modal
+        .confirm('是否确认回收？')
+        .then(function () {
+          debugger
+          huishou(_this.huishouParam).then((response) => {
+            _this.$modal.msgSuccess("回收成功");
+            
+
+            let goodsParam = {
+              pageNum: 1,
+              pageSize: 999,
+              saleUid: _this.userId,
+            };
+            listGoodsTemp(goodsParam).then((response) => {
+              _this.goodsList = response.rows;
+            });
+            _this.huishouDia = false;
+            return true;
+          });
+          
+        })
+        .then(() => {
+          // this.$modal.msgSuccess("回收成功");
+        })
+        .catch(() => {});
     },
 
     // 我的藏品
@@ -585,7 +614,7 @@ export default {
         pageSize: 999,
         saleUid: row.userId,
       };
-
+      this.userId = row.userId;
       listGoodsTemp(goodsParam).then((response) => {
         this.goodsList = response.rows;
         // this.total = response.total;
@@ -649,19 +678,20 @@ export default {
         userIds : ids,
         status : 1,
       }
+      let _this = this;
       this.$modal
         .confirm('是否冻结选中用户？')
         .then(function () {
           debugger
           // 冻结用户
           dongjieUser(param).then((response) => {
-
+            _this.getList();
+            _this.$modal.msgSuccess("操作成功");
           });
           return true;
         })
         .then(() => {
-          this.getList();
-          this.$modal.msgSuccess("操作成功");
+          
         })
         .catch(() => {});
     },
@@ -676,13 +706,15 @@ export default {
         userIds : ids,
         status : 0,
       }
+      let _this = this;
       this.$modal
         .confirm('是否解冻选中用户？')
         .then(function () {
           debugger
           // 冻结用户
           dongjieUser(param).then((response) => {
-
+            _this.getList();
+            _this.$modal.msgSuccess("操作成功");
           });
           return true;
         })

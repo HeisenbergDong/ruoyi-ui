@@ -53,7 +53,7 @@ export const constantRoutes = [
   },
   {
     path: '/404',
-    component: () => import('@/views/error/404'),
+    component: () => import('@/views/index'),
     hidden: true
   },
   {
