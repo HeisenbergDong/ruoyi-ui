@@ -34,9 +34,9 @@
         </el-select>
       </el-form-item>
 
-       <el-form-item label="卖家姓名" prop="name">
+       <el-form-item label="卖家姓名" prop="saleName">
         <el-input
-          v-model="queryParams.name"
+          v-model="queryParams.saleName"
           placeholder="请输入"
           clearable
           @keyup.enter.native="handleQuery"
@@ -83,7 +83,7 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column label="${comment}" align="center" prop="id" /> -->
-      <el-table-column label="卖家姓名" align="center" prop="saleUser" />
+      <el-table-column label="卖家姓名" align="center" prop="saleName" />
       <el-table-column label="卖家手机号" align="center" prop="salePhone" />
 
        <el-table-column label="商品主图" align="center" prop="image" width="100">
@@ -418,6 +418,7 @@ export default {
     /** 查询商品列表 */
     getList() {
       this.loading = true;
+      debugger
       listGoods(this.queryParams).then((response) => {
         this.goodsList = response.rows;
         this.total = response.total;

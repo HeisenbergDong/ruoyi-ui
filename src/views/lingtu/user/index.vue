@@ -720,8 +720,6 @@ export default {
           return true;
         })
         .then(() => {
-          this.getList();
-          this.$modal.msgSuccess("操作成功");
         })
         .catch(() => {});
     },

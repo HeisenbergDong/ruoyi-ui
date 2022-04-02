@@ -102,13 +102,12 @@
           </template>
       </el-table-column>
 
-      <!-- <el-table-column label="位置" align="center" prop="bannerPosition" /> -->
-      <el-table-column label="位置" align="center" prop="bannerPosition">
+      <!-- <el-table-column label="位置" align="center" prop="bannerPosition">
           <template slot-scope="scope">
               <span v-if="scope.row.bannerPosition == 0">首页</span>
               <span v-if="scope.row.bannerPosition == 1">搜索页</span>
           </template>
-      </el-table-column>
+      </el-table-column> -->
       
       <!-- <el-table-column label="是否展示" align="center" prop="isShow" /> -->
       <el-table-column label="是否展示" align="center" prop="isShow">
@@ -164,12 +163,12 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="banner位置" prop="bannerPosition">
+        <!-- <el-form-item label="banner位置" prop="bannerPosition">
           <el-radio-group v-model="bannerPosition" >
             <el-radio label="0">首页</el-radio>
             <el-radio label="1">搜索页</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="banner类型" prop="bannerType" >
           <el-radio-group v-model="bannerType" @change="bannerTypeChange">
@@ -378,6 +377,7 @@ debugger
       this.bannerPosition = '0';
       this.bannerType = '0';
       this.goodsShow = false;
+      this.showText = true;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
